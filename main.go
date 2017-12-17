@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"log"
-	"github.com/erikperttu/kubernetes-ready-service-tutoral/handlers"
+	"github.com/erikperttu/kubernetes-ready-service-tutorial/handlers"
 	"os"
 )
 

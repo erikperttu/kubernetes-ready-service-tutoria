@@ -5,11 +5,19 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
+	"encoding/json"
 )
 
 func TestHome(t *testing.T) {
 	w := httptest.NewRecorder()
-	home(w, nil)
+
+	buildTime := time.Now().Format("UnixDate")
+	commit := "CommitHash1234"
+	release := "test release number"
+	h := home(buildTime, commit, release)
+	h(w, nil)
+
 
 	resp := w.Result()
 	if have, want := resp.StatusCode, http.StatusOK; have != want {
@@ -22,6 +30,27 @@ func TestHome(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	info := struct {
+		BuildTime string `json:"buildTime"`
+		Commit    string `json:"commit"`
+		Release   string `json:"release"`
+	}{}
+	err = json.Unmarshal(greeting, &info)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if info.Release != release {
+		t.Errorf("Release version is wrong. Have: %s, want: %s", info.Release, release)
+	}
+	if info.BuildTime != buildTime {
+		t.Errorf("Build time is wrong. Have: %s, want: %s", info.BuildTime, buildTime)
+	}
+	if info.Commit != commit {
+		t.Errorf("Commit is wrong. Have: %s, want: %s", info.Commit, commit)
+	}
+
 	if have, want := string(greeting), "Hello! Your request was processed."; have != want {
 		t.Errorf("The greeting is wrong. Have: %s, want: %s.", have, want)
 	}

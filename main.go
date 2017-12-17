@@ -2,13 +2,17 @@ package main
 
 import (
 	"github.com/erikperttu/kubernetes-ready-service-tutorial/handlers"
+	"github.com/erikperttu/kubernetes-ready-service-tutorial/version"
 	"log"
 	"net/http"
 	"os"
 )
 
 func main() {
-	log.Print("Starting the service...")
+	log.Printf(
+		"Starting the service...\ncommit: %s, build time: %s, release: %s",
+		version.Commit, version.BuildTime, version.Release,
+	)
 	router := handlers.Router()
 
 	port := os.Getenv("PORT")

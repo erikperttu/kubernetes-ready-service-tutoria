@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestHome(t *testing.T){
+func TestHome(t *testing.T) {
 	w := httptest.NewRecorder()
 	home(w, nil)
 

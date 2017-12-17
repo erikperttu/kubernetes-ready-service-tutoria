@@ -2,23 +2,21 @@ package handlers
 
 import (
 	"github.com/gorilla/mux"
+	"log"
 	"sync/atomic"
 	"time"
-	"log"
 )
 
 // Router register
 func Router(buildTime, commit, release string) *mux.Router {
 	isReady := &atomic.Value{}
 	isReady.Store(false)
-	go func(){
+	go func() {
 		log.Printf("Readyz probe is negative by default...")
 		time.Sleep(10 * time.Second)
 		isReady.Store(true)
 		log.Printf("Readyz probe is positive.")
 	}()
-
-
 
 	r := mux.NewRouter()
 	r.HandleFunc("/home", home(buildTime, commit, release)).Methods("GET")

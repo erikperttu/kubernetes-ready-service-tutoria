@@ -1,12 +1,12 @@
 package handlers
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
-	"encoding/json"
 )
 
 func TestHome(t *testing.T) {
@@ -17,7 +17,6 @@ func TestHome(t *testing.T) {
 	release := "test release number"
 	h := home(buildTime, commit, release)
 	h(w, nil)
-
 
 	resp := w.Result()
 	if have, want := resp.StatusCode, http.StatusOK; have != want {
